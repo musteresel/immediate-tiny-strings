@@ -10,6 +10,8 @@ AC_CONFIG_HEADERS(config.h)
 
 AC_PROG_CC
 
+AC_C_BIGENDIAN
+
 AC_HEADER_ASSERT
 AC_CHECK_HEADERS(stdbool.h stddef.h stdint.h,,
   AC_MSG_WARN(Compilation is likely to fail without this header),)
