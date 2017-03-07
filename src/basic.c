@@ -1,5 +1,8 @@
 #include "its.h"
 
+#include <stdbool.h>
+#include <stddef.h>
+
 
 #define PATTERN_IMMEDIATE 0x01
 #define PATTERN_INVALID (0x02 | PATTERN_IMMEDIATE)
