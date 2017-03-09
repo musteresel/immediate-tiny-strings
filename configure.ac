@@ -33,6 +33,10 @@ dnl not found then good luck!
 AC_CHECK_HEADERS(stdbool.h stddef.h stdint.h,,
   AC_MSG_WARN(Compilation is likely to fail without this header),)
 
+dnl Check whether the system provides some function to allocate
+dnl aligned memory.
+AC_CHECK_FUNCS(aligned_alloc posix_memalign)
+
 dnl Files to be generated
 AC_CONFIG_FILES(Makefile src/Makefile test/Makefile)
 
