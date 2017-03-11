@@ -1,5 +1,14 @@
-#include "its.h"
+/// \file
+///
+/// This file contains code that creates and destroys immediate tiny
+/// strings. Creation of immediate tiny strings may need to do an
+/// allocation (to store the string when it's not tiny). In order to
+/// have one bit "free" to encode whether a immediate tiny string
+/// contains the actual tiny string or a pointer to the string the
+/// allocation must return an (at least) 2 byte aligned address.
 
+
+#include "its.h"
 #include "config.h"
 #include <assert.h>
 #include <stdbool.h>
@@ -10,7 +19,7 @@
 /// Allocate a memory region of the specified size at an even (2 byte
 /// aligned) address.
 ///
-/// \TODO Check whether posix_memalign accepts 2 as value for
+/// \todo Check whether posix_memalign accepts 2 as value for
 /// alignment. Perhaps increase to sizeof(void *) to be safe.
 ///
 /// \param[in] size Required size of the memory region.
@@ -35,7 +44,7 @@ inline static void * allocate_2byte_aligned(size_t size) {
 ///
 /// \param[in] ptr Pointer to the 2 byte aligned memory region.
 inline static void free_2byte_aligned(void * ptr) {
-  assert(((uintptr_t)ptr) & 0x01 == 0);
+  assert(((uintptr_t)ptr) & 0x01 == 0); // 2 byte aligned address
 #if defined(HAVE_ALIGNED_ALLOC) || defined(HAVE_POSIX_MEMALIGN)
   free(ptr);
 #else

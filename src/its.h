@@ -1,3 +1,11 @@
+/// \file
+///
+/// This is the header file containing the user visible API of the
+/// immediate tiny strings library. It contains the structure and type
+/// definition of the its type as well as declarations of all
+/// available functions that are part of the library.
+
+
 #ifndef IMMEDIATE_TINY_STRING_HEADER
 #define IMMEDIATE_TINY_STRING_HEADER 1
 #include <stdbool.h>

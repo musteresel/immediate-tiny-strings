@@ -37,6 +37,26 @@ dnl Check whether the system provides some function to allocate
 dnl aligned memory.
 AC_CHECK_FUNCS(aligned_alloc posix_memalign)
 
+dnl Doxygen allows to generate nice documentation, but it should not
+dnl be a strict requirement.
+AC_CHECK_PROGS([DOXYGEN], [doxygen])
+if test -z "$DOXYGEN"; then
+  AC_MSG_WARN([Doxygen not found - continuing without])
+fi
+AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
+AM_COND_IF([HAVE_DOXYGEN],
+  [AC_CONFIG_FILES([docs/Doxyfile docs/Makefile])])
+
+dnl Doxygen may use the dot tool if available
+AC_ARG_VAR(DOT, dot program to use for generating graphs)
+have_dot=YES
+AC_PATH_PROGS(DOT, dot)
+if test -z "$DOT"; then
+  AC_MSG_WARN(dot not found, will omit graphs from documentation)
+  have_dot=NO
+fi
+AC_SUBST(HAVE_DOT, $have_dot)
+
 dnl Files to be generated
 AC_CONFIG_FILES(Makefile src/Makefile test/Makefile)
 
