@@ -9,8 +9,9 @@ int main() {
     if (! its_good(string)) {
       ++failures;
       fprintf(stderr, "Failed to allocate size %u\n", size);
+    } else {
+      its_free(string);
     }
-    its_free(string);
   }
   return (failures > 0);
 }
