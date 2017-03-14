@@ -16,6 +16,11 @@
 #include <stdlib.h>
 
 
+/// Check whether a pointer is aligned to 2 bytes.
+///
+#define IS_ALIGNED_2BYTE(value) (((uintptr_t)(value) & 0x01) == 0)
+
+
 /// Allocate a memory region of the specified size at an even (2 byte
 /// aligned) address.
 ///
@@ -44,7 +49,7 @@ inline static void * allocate_2byte_aligned(size_t size) {
 ///
 /// \param[in] ptr Pointer to the 2 byte aligned memory region.
 inline static void free_2byte_aligned(void * ptr) {
-  assert(((uintptr_t) ptr & 0x01) == 0); // 2 byte aligned address
+  assert(IS_ALIGNED_2BYTE(ptr));
 #if defined(HAVE_ALIGNED_ALLOC) || defined(HAVE_POSIX_MEMALIGN)
   free(ptr);
 #else
