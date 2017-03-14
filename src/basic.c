@@ -64,8 +64,16 @@ inline static void free_2byte_aligned(void * ptr) {
 
 
 its its_alloc(size_t size) {
-  its const result = {.data = PATTERN_INVALID};
-  return result;
+  if (size < sizeof(uintptr_t)) {
+    its const immediate_string = {.data = PATTERN_IMMEDIATE};
+    return immediate_string;
+  } else {
+    void * const memory = allocate_2byte_aligned(size);
+    assert(IS_ALIGNED_2BYTE(memory));
+    its const allocated_string = {
+      .data = memory ? (uintptr_t) memory : PATTERN_INVALID};
+    return allocated_string;
+  }
 }
 
 
@@ -75,5 +83,7 @@ bool its_good(its string) {
 
 
 void its_free(its string) {
-#warning Not implemented
+  if (IS_ALIGNED_2BYTE(string.data)) {
+    free_2byte_aligned((void *) string.data);
+  } // else immediate, thus no action neccessary
 }
