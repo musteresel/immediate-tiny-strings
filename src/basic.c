@@ -24,9 +24,6 @@
 /// Allocate a memory region of the specified size at an even (2 byte
 /// aligned) address.
 ///
-/// \todo Check whether posix_memalign accepts 2 as value for
-/// alignment. Perhaps increase to sizeof(void *) to be safe.
-///
 /// \param[in] size Required size of the memory region.
 /// \return Pointer to the memory, or NULL on failure.
 inline static void * allocate_2byte_aligned(size_t size) {
@@ -34,7 +31,10 @@ inline static void * allocate_2byte_aligned(size_t size) {
   return aligned_alloc(2, size);
 #elif defined(HAVE_POSIX_MEMALIGN)
   void * ptr;
-  if (posix_memalign(&ptr, 2, size) == 0) {
+  if (posix_memalign(&ptr, sizeof(void *), size) == 0) {
+    assert(IS_ALIGNED_2BYTE(ptr)); // Paranoia due to uncertainty
+                                   // about alignment parameter to
+                                   // posix_memalign.
     return ptr;
   } else {
     return NULL;
