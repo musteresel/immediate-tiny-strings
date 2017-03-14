@@ -70,7 +70,7 @@ its its_alloc(size_t size) {
 
 
 bool its_good(its string) {
-  return !(string.data & PATTERN_INVALID);
+  return (string.data != PATTERN_INVALID);
 }
 
 
