@@ -8,6 +8,8 @@
 
 #ifndef IMMEDIATE_TINY_STRING_HEADER
 #define IMMEDIATE_TINY_STRING_HEADER 1
+
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -31,8 +33,12 @@ typedef struct its_structure {
 /// function will allocate dynamic memory. Otherwise it just returns
 /// an appropriately initialised its structure.
 ///
-/// Allocation failure can (and must) be performed by calling its_good
-/// on the return value.
+/// Allocation failure can (and must) be checked for by calling
+/// its_good on the return value.
+///
+/// \warning The contents of the string won't be initialised; using
+/// them without assigning content first results in undefined
+/// behaviour.
 ///
 /// \param[in] size Desired size of the new string.
 /// \return The new string.
