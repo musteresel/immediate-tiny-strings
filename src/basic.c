@@ -40,7 +40,24 @@ inline static void * allocate_2byte_aligned(size_t size) {
     return NULL;
   }
 #else
-#error Aligned allocation with malloc not yet implemented!
+  char * const memory = malloc(size + 2);
+  if (! memory) {
+    return NULL;
+  }
+  if (IS_ALIGNED_2BYTE(memory)) {
+    // memory is correctly aligned, but to distinguish from originally
+    // not aligned addresses when freeing we need to have at least one
+    // byte. Thus we return the next correctly aligned address and
+    // leave a note in the byte directly preceeding that address.
+    memory[1] = '1';
+    return &(memory[2]);
+  } else {
+    // memory is not correctly aligned. Leave a note in the first byte
+    // about this for freeing later and return the next (and correctly
+    // aligned) address.
+    memory[0] = '0';
+    return &(memory[1]);
+  }
 #endif
 }
 
@@ -53,7 +70,20 @@ inline static void free_2byte_aligned(void * ptr) {
 #if defined(HAVE_ALIGNED_ALLOC) || defined(HAVE_POSIX_MEMALIGN)
   free(ptr);
 #else
-#error Freeing aligned memory allocated with malloc not yet implemented!
+  char const * const memory = ptr;
+  void const * original_address;
+  if (memory[-1] == '0') {
+    // malloc returned an address that was not aligned when allocating
+    // this memory block. Thus we left one byte unused and returned
+    // the address of memory[1]. Now we need to undo this addition.
+    original_address = &(memory[-1]);
+  } else {
+    // malloc returned an address that was aligned. We left two bytes
+    // unused and need to undo that now.
+    assert(memory[-1] == '1');
+    original_address = &(memory[-2]);
+  }
+  free((void *) original_address);
 #endif
 }
 
