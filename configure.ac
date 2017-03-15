@@ -24,6 +24,13 @@ dnl we are building for.
 AC_PROG_CC
 AC_C_BIGENDIAN
 
+dnl Check whether pointers are even large enough to store more than
+dnl just a terminating null byte (plus one byte control information).
+AC_CHECK_SIZEOF([char *])
+if test $ac_cv_sizeof_char_p -le 2; then
+  AC_MSG_ERROR([pointers are too small to be usefull])
+fi
+
 dnl Check that assert.h is available and add an option to disable
 dnl assertions.
 AC_HEADER_ASSERT
