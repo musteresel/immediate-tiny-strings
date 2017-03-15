@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /// Check whether a pointer is aligned to 2 bytes.
@@ -90,7 +91,6 @@ inline static void free_2byte_aligned(void * ptr) {
 
 #define PATTERN_IMMEDIATE 0x01
 #define PATTERN_INVALID (0x02 | PATTERN_IMMEDIATE)
-#define RIGHT_SHIFT_IMMEDIATE_LENGTH 2
 
 
 its its_alloc(size_t size) {
@@ -116,4 +116,43 @@ void its_free(its string) {
   if (IS_ALIGNED_2BYTE(string.data)) {
     free_2byte_aligned((void *) string.data);
   } // else immediate, thus no action neccessary
+}
+
+
+size_t its_length(its string) {
+  return strlen(its_cstring(&string));
+}
+
+
+char * its_cstring(its * string) {
+  assert(string != NULL);
+  if (IS_ALIGNED_2BYTE(string->data)) {
+    return (char *) string->data;
+  } else {
+#ifdef WORDS_BIGENDIAN
+    return (char *) &string->data;
+#else
+    // On little endian systems, the least significant byte is stored
+    // first. We use this byte to distinguish between immediate and
+    // non immediate strings, thus skip it.
+    return ((char *) &string->data) + 1;
+#endif
+  }
+}
+
+
+char const * its_const_cstring(its const * string) {
+  // Removing the const is OK because we know that its_cstring won't
+  // be modifying the its structure. The returned pointer is converted
+  // to a pointer to const, thus also not allowing modifications.
+  return its_cstring((its *) string);
+}
+
+
+its its_from_cstring(char const * cstring) {
+  its string = its_alloc(strlen(cstring) + 1);
+  if (its_good(string)) {
+    strcpy(its_cstring(&string), cstring);
+  }
+  return string;
 }

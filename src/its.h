@@ -70,4 +70,42 @@ void its_free(its string);
 bool its_good(its string);
 
 
+/// Determine the length of the string.
+///
+/// \remark This operation takes time linear to the actual length of
+/// the string.
+///
+/// \param[in] string The string whose length is asked for.
+/// \return The length of the string.
+size_t its_length(its string);
+
+
+/// Get access to the underlying C string.
+///
+/// \warning Do not write beyond the strings length, otherwise
+/// behavior is undefined!
+///
+/// \param[in,out] string String whose C string is to be accessed.
+/// \return C string backing the immediate tiny string.
+char * its_cstring(its * string);
+
+
+/// Get (read only) access to the underlying C string.
+///
+/// \see its_cstring(its*)
+char const * its_const_cstring(its const * string);
+
+
+/// Create an immediate tiny string from a C string.
+///
+/// Creates a new immediate tiny string and copies the given C string
+/// to it.
+///
+/// \param[in] cstring C string which shall be converted to an
+/// immediate tiny string.
+/// \return Immediate tiny string with the same contents as the given
+/// C string.
+its its_from_cstring(char const * cstring);
+
+
 #endif // IMMEDIATE_TINY_STRING_HEADER
