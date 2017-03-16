@@ -1,6 +1,6 @@
 dnl configure.ac for immediate-tiny-strings library
 AC_PREREQ(2.59)
-AC_INIT(immediate-tiny-strings, 0.0.0, github-issues)
+AC_INIT(immediate-tiny-strings, 0.1.0, github-issues)
 
 dnl Move auxilary files into subdirectories to keep the top level
 dnl directory as clean as possible.
