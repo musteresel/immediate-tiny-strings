@@ -1,0 +1,5 @@
+language: c
+script: autoreconf -fvi && ./configure && make && make check
+compiler:
+  - gcc
+  - clang
