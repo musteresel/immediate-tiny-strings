@@ -1,2 +1,5 @@
-SUBDIRS = src test docs
+if HAVE_DOXYGEN
+  MAYBE_DOCS = docs
+endif
+SUBDIRS = src test $(MAYBE_DOCS)
 ACLOCAL_AMFLAGS = -I m4

@@ -51,8 +51,6 @@ if test -z "$DOXYGEN"; then
   AC_MSG_WARN([Doxygen not found - continuing without])
 fi
 AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
-AM_COND_IF([HAVE_DOXYGEN],
-  [AC_CONFIG_FILES([docs/Doxyfile docs/Makefile])])
 
 dnl Doxygen may use the dot tool if available
 AC_ARG_VAR(DOT, dot program to use for generating graphs)
@@ -65,7 +63,8 @@ fi
 AC_SUBST(HAVE_DOT, $have_dot)
 
 dnl Files to be generated
-AC_CONFIG_FILES(Makefile src/Makefile test/Makefile)
+AC_CONFIG_FILES(Makefile src/Makefile test/Makefile
+                docs/Doxyfile docs/Makefile)
 
 dnl Do it!
 AC_OUTPUT
