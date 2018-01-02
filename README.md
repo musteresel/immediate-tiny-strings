@@ -1,5 +1,9 @@
 # Immediate tiny strings
 
+[![Build Status][travis-status]][travis-status]
+
+[travis-status]: https://travis-ci.org/musteresel/immediate-tiny-strings.svg?branch=master
+
 Ahead of you is a small C library for what I called "immediate tiny
 strings": Short ("tiny") strings are stored as immediate (without
 indirection through a pointer) values.  This saves both time and space
