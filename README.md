@@ -1,8 +1,6 @@
 # Immediate tiny strings
 
-[![Build Status][travis-status]][travis-status]
-
-[travis-status]: https://travis-ci.org/musteresel/immediate-tiny-strings.svg?branch=master
+[![Build Status](https://travis-ci.org/musteresel/immediate-tiny-strings.svg?branch=master)](https://travis-ci.org/musteresel/immediate-tiny-strings)
 
 Ahead of you is a small C library for what I called "immediate tiny
 strings": Short ("tiny") strings are stored as immediate (without
